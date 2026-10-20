@@ -5,5 +5,6 @@ target/
 .vscode/
 .settings/
 .classpath
-.project
-TP6-Appli/Appli/src/main/java/tp/ecole/util/ConnectionManager.java
+.projects
+# Identifiants MySQL locaux
+src/main/resources/db.properties
