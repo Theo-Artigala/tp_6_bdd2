@@ -6,3 +6,4 @@ target/
 .settings/
 .classpath
 .project
+TP6-Appli/Appli/src/main/java/tp/ecole/util/ConnectionManager.java
