@@ -22,47 +22,135 @@ import java.util.List;
  *      ou de les encapsuler dans une DaoException, et justifiez
  *      votre choix dans le compte-rendu.
  *
- 
+
  * =====================================================================
  */
 public class EleveDAOImpl implements EleveDAO {
 
     @Override
     public List<Eleve> findAll() throws SQLException {
-        // TODO : interroger la table ELEVES et retourner tous les élèves
-        throw new UnsupportedOperationException("À implémenter — Question 4");
+        List<Eleve> eleves = new ArrayList<>();
+        String sql = "SELECT * FROM ELEVES";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Eleve eleve = new Eleve();
+                eleve.setNumEleve(rs.getInt("NUM_ELEVE"));
+                eleve.setNom(rs.getString("NOM"));
+                eleve.setPrenom(rs.getString("PRENOM"));
+                eleve.setDateNaissance(rs.getDate("DATE_NAISSANCE").toLocalDate());
+                eleve.setPoids(rs.getInt("POIDS"));
+                eleve.setAnnee(rs.getInt("ANNEE"));
+                eleve.setGenre(rs.getString("GENRE"));
+                eleves.add(eleve);
+            }
+        }
+        return eleves;
     }
 
     @Override
     public Eleve findById(int numEleve) throws SQLException {
-        // TODO : SELECT * FROM ELEVES WHERE NUM_ELEVE = ?
-        throw new UnsupportedOperationException("À implémenter — Question 4");
+        Eleve eleve = null;
+        String sql = "SELECT * FROM ELEVES WHERE NUM_ELEVE = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, numEleve);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    eleve = new Eleve();
+                    eleve.setNumEleve(rs.getInt("NUM_ELEVE"));
+                    eleve.setNom(rs.getString("NOM"));
+                    eleve.setPrenom(rs.getString("PRENOM"));
+                    eleve.setDateNaissance(rs.getDate("DATE_NAISSANCE").toLocalDate());
+                    eleve.setPoids(rs.getInt("POIDS"));
+                    eleve.setAnnee(rs.getInt("ANNEE"));
+                    eleve.setGenre(rs.getString("GENRE"));
+                }
+            }
+        }
+        return eleve;
     }
 
     @Override
     public List<Eleve> findByNom(String nom) throws SQLException {
-        // TODO : SELECT * FROM ELEVES WHERE NOM LIKE ?
-        //        (penser à ajouter '%' pour une recherche partielle)
-        throw new UnsupportedOperationException("À implémenter — Question 4");
+        List<Eleve> eleves = new ArrayList<>();
+        String sql = "SELECT * FROM ELEVES WHERE NOM LIKE ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, nom + "%");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Eleve eleve = new Eleve();
+                    eleve.setNumEleve(rs.getInt("NUM_ELEVE"));
+                    eleve.setNom(rs.getString("NOM"));
+                    eleve.setPrenom(rs.getString("PRENOM"));
+                    eleve.setDateNaissance(rs.getDate("DATE_NAISSANCE").toLocalDate());
+                    eleve.setPoids(rs.getInt("POIDS"));
+                    eleve.setAnnee(rs.getInt("ANNEE"));
+                    eleve.setGenre(rs.getString("GENRE"));
+                    eleves.add(eleve);
+                }
+            }
+        }
+        return eleves;
     }
 
     @Override
     public void save(Eleve eleve) throws SQLException {
-        // TODO : INSERT INTO ELEVES (NUM_ELEVE, NOM, PRENOM, ...) VALUES (?, ?, ?, ...)
-        throw new UnsupportedOperationException("À implémenter — Question 4");
+        String sql = "INSERT INTO ELEVES (NUM_ELEVE, NOM, PRENOM, DATE_NAISSANCE, POIDS, ANNEE, GENRE) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, eleve.getNumEleve());
+            ps.setString(2, eleve.getNom());
+            ps.setString(3, eleve.getPrenom());
+            ps.setDate(4, Date.valueOf(eleve.getDateNaissance()));
+            ps.setInt(5, eleve.getPoids());
+            ps.setInt(6, eleve.getAnnee());
+            ps.setString(7, eleve.getGenre());
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public void update(Eleve eleve) throws SQLException {
-        // TODO : UPDATE ELEVES SET NOM=?, PRENOM=?, ... WHERE NUM_ELEVE=?
-        throw new UnsupportedOperationException("À implémenter — Question 4");
+        String sql = "UPDATE ELEVES SET NOM = ?, PRENOM = ?, DATE_NAISSANCE = ?, POIDS = ?, ANNEE = ?, GENRE = ? "
+                + "WHERE NUM_ELEVE = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, eleve.getNom());
+            ps.setString(2, eleve.getPrenom());
+            ps.setDate(3, Date.valueOf(eleve.getDateNaissance()));
+            ps.setInt(4, eleve.getPoids());
+            ps.setInt(5, eleve.getAnnee());
+            ps.setString(6, eleve.getGenre());
+            ps.setInt(7, eleve.getNumEleve());
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public void delete(int numEleve) throws SQLException {
-        // TODO : DELETE FROM ELEVES WHERE NUM_ELEVE=?
-        //        Attention : vérifiez qu'il n'y a pas de contraintes de clé étrangère
-        //        (l'élève peut avoir des RESULTATS ou ACTIVITES_PRATIQUEES)
-        throw new UnsupportedOperationException("À implémenter — Question 4");
+        String sql = "DELETE FROM ELEVES WHERE NUM_ELEVE = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, numEleve);
+            ps.executeUpdate();
+        }
     }
 }

@@ -21,8 +21,8 @@ public class ConnectionManager {
     // TODO : renseignez les paramètres de connexion
     // ---------------------------------------------------------------
     private static final String DB_URL      = "jdbc:mysql://localhost:3306/ecole?useSSL=false&serverTimezone=UTC";
-    private static final String DB_USER     = "root";                            // à modifier si besoin
-    private static final String DB_PASSWORD = "votre_mot_de_passe_BD";           // à modifier : mettre votre mot de passe MySQL
+    private static final String DB_USER     = "votre_nom_utilisateur_BD";       // à modifier
+    private static final String DB_PASSWORD = "votre_mot_de_passe_BD";           // à modifier
     // ---------------------------------------------------------------
 
     /** Constructeur privé : classe utilitaire, pas d'instanciation. */
