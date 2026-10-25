@@ -21,8 +21,8 @@ public class ConnectionManager {
     // TODO : renseignez les paramètres de connexion
     // ---------------------------------------------------------------
     private static final String DB_URL      = "jdbc:mysql://localhost:3306/ecole?useSSL=false&serverTimezone=UTC";
-    private static final String DB_USER     = "votre_nom_utilisateur_BD";       // à modifier
-    private static final String DB_PASSWORD = "votre_mot_de_passe_BD";           // à modifier
+    private static final String DB_USER     = "root";                            // à modifier si besoin
+    private static final String DB_PASSWORD = "votre_mot_de_passe_BD";           // à modifier : mettre votre mot de passe MySQL
     // ---------------------------------------------------------------
 
     /** Constructeur privé : classe utilitaire, pas d'instanciation. */
@@ -38,7 +38,8 @@ public class ConnectionManager {
      *        les constantes ci-dessus sont correctement renseignées).
      */
     public static Connection getConnection() throws SQLException {
-        // TODO : retourner une connexion JDBC en utilisant DriverManager
-        throw new UnsupportedOperationException("ConnectionManager.getConnection() non implémenté — voir TODO");
+        // On demande à DriverManager d'ouvrir une connexion avec l'URL, l'utilisateur et le mot de passe
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        return conn;
     }
 }
