@@ -32,21 +32,78 @@ public class ResultatDAOImpl implements ResultatDAO {
 
     @Override
     public List<Resultat> findByEleve(int numEleve) throws SQLException {
-        // TODO : Retourner une liste de résultats pour un élève donné
-        throw new UnsupportedOperationException("À implémenter — Question 4");
+        List<Resultat> resultats = new ArrayList<>();
+        String sql = "SELECT * FROM RESULTATS WHERE NUM_ELEVE = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, numEleve);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Resultat resultat = new Resultat();
+                    resultat.setNumEleve(rs.getInt("NUM_ELEVE"));
+                    resultat.setNumCours(rs.getInt("NUM_COURS"));
+                    resultat.setPoints(rs.getDouble("POINTS"));
+                    resultats.add(resultat);
+                }
+            }
+        }
+        return resultats;
     }
 
     @Override
     public void enregistrerInscription(int numEleve, int numCours) throws SQLException {
-        // TODO : Ajouter une nouvelle ligne de note pour un élève, mais sans spécifier les points
-        throw new UnsupportedOperationException("À implémenter — Question 4");
+        String sql = "INSERT INTO RESULTATS (NUM_ELEVE, NUM_COURS) VALUES (?, ?)";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, numEleve);
+            ps.setInt(2, numCours);
+            ps.executeUpdate();
+        }
     }
 
     @Override
     public void modifierNote(int numEleve, int numCours, double points) throws SQLException {
-        // TODO : Affecter une note à un élève pour un cours donné.
         // Question 6 (service): Une fois le trigger de contrôle de note créé, une note invalide
         // provoquera une SQLException ici -> le rollback sera déclenché dans EcoleService
-        throw new UnsupportedOperationException("À implémenter — Question 4");
+        String sql = "UPDATE RESULTATS SET POINTS = ? WHERE NUM_ELEVE = ? AND NUM_COURS = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setDouble(1, points);
+            ps.setInt(2, numEleve);
+            ps.setInt(3, numCours);
+            ps.executeUpdate();
+        }
+    }
+
+    @Override
+    public void enregistrerInscription(Connection conn, int numEleve, int numCours) throws SQLException {
+        // On utilise la connexion du service : on ne la ferme pas ici
+        String sql = "INSERT INTO RESULTATS (NUM_ELEVE, NUM_COURS) VALUES (?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, numEleve);
+            ps.setInt(2, numCours);
+            ps.executeUpdate();
+        }
+    }
+
+    @Override
+    public void modifierNote(Connection conn, int numEleve, int numCours, double points) throws SQLException {
+        // On utilise la connexion du service : on ne la ferme pas ici
+        String sql = "UPDATE RESULTATS SET POINTS = ? WHERE NUM_ELEVE = ? AND NUM_COURS = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, points);
+            ps.setInt(2, numEleve);
+            ps.setInt(3, numCours);
+            ps.executeUpdate();
+        }
     }
 }

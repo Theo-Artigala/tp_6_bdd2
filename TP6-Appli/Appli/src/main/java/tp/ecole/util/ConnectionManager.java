@@ -57,7 +57,8 @@ public class ConnectionManager {
      *        les constantes ci-dessus sont correctement renseignées).
      */
     public static Connection getConnection() throws SQLException {
-        // TODO : retourner une connexion JDBC en utilisant DriverManager
-        throw new UnsupportedOperationException("ConnectionManager.getConnection() non implémenté — voir TODO");
+        // On demande à DriverManager d'ouvrir une connexion avec l'URL, l'utilisateur et le mot de passe
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        return conn;
     }
 }

@@ -1,6 +1,7 @@
 package tp.ecole.dao;
 
 import tp.ecole.model.Resultat;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -50,4 +51,9 @@ public interface ResultatDAO {
      * @throws SQLException en cas d'erreur JDBC ou de trigger refusant la note
      */
     void modifierNote(int numEleve, int numCours, double points) throws SQLException;
+
+    // Versions qui utilisent la connexion donnée par le service (Question 6)
+    void enregistrerInscription(Connection conn, int numEleve, int numCours) throws SQLException;
+
+    void modifierNote(Connection conn, int numEleve, int numCours, double points) throws SQLException;
 }

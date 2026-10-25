@@ -19,13 +19,64 @@ package tp.ecole.model;
  */
 public class Cours {
 
-    // TODO : déclarez les attributs privés (numCours, nom, nbHeures, annee)
+    // Attributs (un par colonne de la table COURS)
+    private int numCours;
+    private String nom;
+    private int nbHeures;
+    private int annee;
 
-    // TODO : constructeur par défaut
+    // Constructeur par défaut (vide)
+    public Cours() {
+    }
 
-    // TODO : constructeur avec tous les paramètres
+    // Constructeur avec tous les paramètres
+    public Cours(int numCours, String nom, int nbHeures, int annee) {
+        this.numCours = numCours;
+        this.nom = nom;
+        this.nbHeures = nbHeures;
+        this.annee = annee;
+    }
 
-    // TODO : getters et setters
+    // Getters et setters
 
-    // TODO : toString()
+    public int getNumCours() {
+        return numCours;
+    }
+
+    public void setNumCours(int numCours) {
+        this.numCours = numCours;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public int getNbHeures() {
+        return nbHeures;
+    }
+
+    public void setNbHeures(int nbHeures) {
+        this.nbHeures = nbHeures;
+    }
+
+    public int getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(int annee) {
+        this.annee = annee;
+    }
+
+    // toString() : pour afficher le cours de façon lisible
+    @Override
+    public String toString() {
+        return "Cours [numCours=" + numCours
+                + ", nom=" + nom
+                + ", nbHeures=" + nbHeures
+                + ", annee=" + annee + "]";
+    }
 }

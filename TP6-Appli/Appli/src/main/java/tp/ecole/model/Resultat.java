@@ -21,13 +21,55 @@ package tp.ecole.model;
  */
 public class Resultat {
 
-    // TODO : déclarez les attributs privés (numEleve, numCours, points)
+    // Attributs (un par colonne de la table RESULTATS)
+    private int numEleve;
+    private int numCours;
+    // Double (et pas double) car la note peut être NULL en base
+    // (quand l'élève est inscrit mais pas encore noté)
+    private Double points;
 
-    // TODO : constructeur par défaut
+    // Constructeur par défaut (vide)
+    public Resultat() {
+    }
 
-    // TODO : constructeur avec tous les paramètres
+    // Constructeur avec tous les paramètres
+    public Resultat(int numEleve, int numCours, Double points) {
+        this.numEleve = numEleve;
+        this.numCours = numCours;
+        this.points = points;
+    }
 
-    // TODO : getters et setters
+    // Getters et setters
 
-    // TODO : toString()
+    public int getNumEleve() {
+        return numEleve;
+    }
+
+    public void setNumEleve(int numEleve) {
+        this.numEleve = numEleve;
+    }
+
+    public int getNumCours() {
+        return numCours;
+    }
+
+    public void setNumCours(int numCours) {
+        this.numCours = numCours;
+    }
+
+    public Double getPoints() {
+        return points;
+    }
+
+    public void setPoints(Double points) {
+        this.points = points;
+    }
+
+    // toString() : pour afficher le résultat de façon lisible
+    @Override
+    public String toString() {
+        return "Resultat [numEleve=" + numEleve
+                + ", numCours=" + numCours
+                + ", points=" + points + "]";
+    }
 }

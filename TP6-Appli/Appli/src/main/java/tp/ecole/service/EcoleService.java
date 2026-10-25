@@ -33,8 +33,7 @@ import java.sql.SQLException;
  */
 public class EcoleService {
 
-    // TODO : déclarez ici les DAOs dont le service a besoin
-    //        (ex. private ResultatDAO resultatDAO = new ResultatDAOImpl();)
+    private final ResultatDAO resultatDAO = new ResultatDAOImpl();
 
     /**
      * Inscrit un élève à un cours et lui attribue une note, de manière
@@ -48,8 +47,26 @@ public class EcoleService {
      *                      est annulée (note invalide, contrainte violée, etc.)
      */
     public void inscrireEtAttribuerNote(int numEleve, int numCours, double points) throws SQLException {
-        // TODO : implémenter la logique transactionnelle décrite ci-dessus
-        throw new UnsupportedOperationException("À implémenter — Question 6");
+        // 1. Obtenir une connexion
+        Connection conn = ConnectionManager.getConnection();
+        try {
+            // 2. Désactiver l'autocommit
+            conn.setAutoCommit(false);
+
+            // 3. et 4. Les deux opérations avec la même connexion
+            resultatDAO.enregistrerInscription(conn, numEleve, numCours);
+            resultatDAO.modifierNote(conn, numEleve, numCours, points);
+
+            // 5. Tout s'est bien passé : on valide
+            conn.commit();
+        } catch (SQLException e) {
+            // 6. Erreur : on annule tout puis on relance l'exception
+            conn.rollback();
+            throw e;
+        } finally {
+            // 7. Toujours fermer la connexion
+            conn.close();
+        }
     }
 
     // ---------------------------------------------------------------
